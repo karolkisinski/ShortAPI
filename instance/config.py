@@ -15,7 +15,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/short_test'
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL_TEST')
 
 class ProductionConfig(Config):
     DEBUG = False
