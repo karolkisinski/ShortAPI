@@ -16,8 +16,7 @@ class ShortAPITestCase(unittest.TestCase):
             }
         
         with self.app.app_context():
-            db.create_all()
-        
+            db.create_all()     
 
     def test_urllist_creation(self):
         res = self.client().post('/urllist/', data=self.urllist)
@@ -49,15 +48,12 @@ class ShortAPITestCase(unittest.TestCase):
                 'url' : 'http://localhost.com/ogeg/dgeg/egdg',
                 'short_url' : 'http://short.com/abcd'
             })
-        print(res)
-        print(str(res.data))
         self.assertEqual(res.status_code, 201)
         res = self.client().put(
             '/urllist/1',
             data = {
                 'title' : 'Test url 3 changed'
             })
-        print(str(res.data))
         self.assertEqual(res.status_code, 200)
         results = self.client().get('/urllist/1')
         self.assertIn('Test url 3 changed', str(results.data))
@@ -80,7 +76,6 @@ class ShortAPITestCase(unittest.TestCase):
         with self.app.app_context():
             db.session.remove()
             db.drop_all()
-
-        
+     
 if __name__ == "__main__":
     unittest.main()
