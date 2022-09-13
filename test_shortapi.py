@@ -22,15 +22,16 @@ class ShortAPITestCase(unittest.TestCase):
     def test_urllist_creation(self):
         res = self.client().post('/urllist/', data=self.urllist)
         self.assertEqual(res.status_code, 201)
-        self.assertIn('url', str(res.data))
+        self.assertIn('Test url', str(res.data))
+        print(str(res.data))
     
     def test_api_can_get_all_urls(self):
         res = self.client().post('/urllist/', data=self.urllist)
         self.assertEqual(res.status_code, 201)
         res = self.client().get('/urllist/')
         self.assertEqual(res.status_code, 200)
-        self.assertIn('url', str(res.data))
-        
+        self.assertIn('Test url', str(res.data))
+        print(str(res.data))
         
 if __name__ == "__main__":
     unittest.main()
