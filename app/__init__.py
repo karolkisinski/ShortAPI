@@ -51,5 +51,41 @@ def create_app(config_name):
             response = jsonify(results)
             response.status_code = 200
             return response
+    
+    @app.route('/urllist/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+    def urllist_manipulation(id, **kwargs):
+        urllist = ShortURL.query.filter_by(id=id).first()
+        if not urllist:
+            abort(404)
+        
+        if request.method == 'DELETE':
+            urllist.delete()
+            return {
+                "message": "urllist {} deleted successfully".format(urllist.id)
+            }, 200
+
+        elif request.method == 'PUT':
+            title = str(request.data.get('title', ''))
+            urllist.title = title
+            urllist.save()
+            response = jsonify({
+                'id': urllist.id,
+                'title': urllist.title,
+                'url': urllist.url,
+                'short_url': urllist.short_url
+            })
+            response.status_code = 200
+            return response
+        
+        else:
+            # GET
+            response = jsonify({
+                'id': urllist.id,
+                'title': urllist.title,
+                'url': urllist.url,
+                'short_url': urllist.short_url
+            })
+            response.status_code = 200
+            return response
 
     return app
