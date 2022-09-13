@@ -23,7 +23,6 @@ class ShortAPITestCase(unittest.TestCase):
         res = self.client().post('/urllist/', data=self.urllist)
         self.assertEqual(res.status_code, 201)
         self.assertIn('Test url', str(res.data))
-        print(str(res.data))
     
     def test_api_can_get_all_urls(self):
         res = self.client().post('/urllist/', data=self.urllist)
@@ -31,7 +30,6 @@ class ShortAPITestCase(unittest.TestCase):
         res = self.client().get('/urllist/')
         self.assertEqual(res.status_code, 200)
         self.assertIn('Test url', str(res.data))
-        print(str(res.data))
 
     def test_api_can_get_url_by_id(self):
         res = self.client().post('/urllist/', data=self.urllist)
@@ -46,16 +44,20 @@ class ShortAPITestCase(unittest.TestCase):
         res = self.client().post(
             '/urllist/',
             data = {
+                'id': 1,
                 'title' : 'Test url 3',
                 'url' : 'http://localhost.com/ogeg/dgeg/egdg',
                 'short_url' : 'http://short.com/abcd'
             })
+        print(res)
+        print(str(res.data))
         self.assertEqual(res.status_code, 201)
         res = self.client().put(
             '/urllist/1',
             data = {
                 'title' : 'Test url 3 changed'
             })
+        print(str(res.data))
         self.assertEqual(res.status_code, 200)
         results = self.client().get('/urllist/1')
         self.assertIn('Test url 3 changed', str(results.data))
