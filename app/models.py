@@ -28,5 +28,5 @@ class ShortURL(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return "".format(self.title)
+        return "".format(self.title, self.short_url, self.url)
     
