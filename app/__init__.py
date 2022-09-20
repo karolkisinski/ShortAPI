@@ -1,7 +1,7 @@
 import os
 from flask_api import FlaskAPI
 from flask_sqlalchemy import SQLAlchemy
-from flask import request, jsonify, abort
+from flask import request, jsonify, abort, redirect
 from instance.config import app_config
 
 db = SQLAlchemy()
@@ -53,6 +53,7 @@ def create_app(config_name):
     @app.route('/urllist/<int:id>', methods=['GET', 'PUT', 'DELETE'])
     def urllist_manipulation(id, **kwargs):
         urllist = ShortURL.query.filter_by(id=id).first()
+
         if not urllist:
             abort(404)
         
@@ -85,5 +86,14 @@ def create_app(config_name):
             })
             response.status_code = 200
             return response
+
+    @app.get("/urllisti/<sh_url>")
+    def redirect_to_url(sh_url, **kwargs):
+        urllist = ShortURL.query.filter_by(short_url=sh_url).first()
+        print("prawie")
+        if not urllist:
+            print("helo")
+            abort(404)
+        return redirect(urllist.url, 302)
 
     return app
