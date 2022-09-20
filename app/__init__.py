@@ -21,15 +21,13 @@ def create_app(config_name):
         if request.method == "POST":
             title = str(request.data.get('title', ''))
             url = str(request.data.get('url', ''))
-            short_url = str(request.data.get('short_url', ''))
             if title:
-                url_list = ShortURL(title=title, url=url, short_url=short_url)
+                url_list = ShortURL(title=title, url=url)
                 url_list.save()
                 response = jsonify({
                     'id': url_list.id,
                     'title': url_list.title,
                     'url': url_list.url,
-                    'short_url': url_list.short_url,
                     'date_created': url_list.date_created
                 })
                 response.status_code = 201
