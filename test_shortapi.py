@@ -11,8 +11,7 @@ class ShortAPITestCase(unittest.TestCase):
         self.client = self.app.test_client
         self.urllist = {
             'title' : 'Test url',
-            'url' : 'http://localhost.com/ogeg/dgeg/egdg',
-            'short_url' : 'http://short.com/abcd'
+            'url' : 'http://localhost.com/ogeg/dgeg/egdg'
             }
         
         with self.app.app_context():
@@ -45,8 +44,7 @@ class ShortAPITestCase(unittest.TestCase):
             data = {
                 'id': 1,
                 'title' : 'Test url 3',
-                'url' : 'http://localhost.com/ogeg/dgeg/egdg',
-                'short_url' : 'http://short.com/abcd'
+                'url' : 'http://localhost.com/ogeg/dgeg/egdg'
             })
         self.assertEqual(res.status_code, 201)
         res = self.client().put(
@@ -63,8 +61,7 @@ class ShortAPITestCase(unittest.TestCase):
             '/urllist/',
             data = {
                 'title' : 'Test url 4',
-                'url' : 'http://localhost.com/ogeg/dgeg/egdg',
-                'short_url' : 'http://short.com/abcd'
+                'url' : 'http://localhost.com/ogeg/dgeg/egdg'
             })
         self.assertEqual(res.status_code,201)
         res = self.client().delete('/urllist/1')
