@@ -6,7 +6,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    email = db.column(db.String(256), nullable=False, unique=True)
+    email = db.Column(db.String(256), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
 
     urls = db.relationship(
@@ -35,7 +35,7 @@ class ShortURL(db.Model):
     url = db.Column(db.String(255))
     short_url = db.Column(db.String(50))
     created_by = db.Column(db.Integer, db.ForeignKey(User.id))
-    
+
     def shortest(self):
         chars = "ABCDEFGHIJKLMNOQPRSTWUZXV"
         s_url = "".join(secrets.choice(chars) for _ in range(8))
