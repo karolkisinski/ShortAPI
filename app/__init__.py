@@ -2,6 +2,7 @@ import os
 from flask_api import FlaskAPI
 from flask_sqlalchemy import SQLAlchemy
 from flask import request, jsonify, abort, redirect
+import auth
 from instance.config import app_config
 
 db = SQLAlchemy()
@@ -95,5 +96,8 @@ def create_app(config_name):
             print("helo")
             abort(404)
         return redirect(urllist.url, 302)
+    
+    from auth import auth_bluetprint
+    app.register_blueprint(auth_bluetprint)
 
     return app
