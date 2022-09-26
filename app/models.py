@@ -1,6 +1,12 @@
+import datetime
 import secrets
 from app import db
 from flask_bcrypt import Bcrypt
+import jwt
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -24,6 +30,36 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def generate_token(self, user_id):
+
+        try:
+            payload = {
+                'exp': datetime.utcnow() + datetime.timedelta(minutes=5),
+                'iat': datetime.utcnow(),
+                'sub': user_id
+            }
+
+            jwt_string = jwt.encode(
+                payload,
+                os.getenv('SECRET'),
+                algorithm='HS256'
+            )
+            return jwt_string
+
+        except Exception as e:
+            return str(e)
+    @staticmethod
+    def decode_token(token):
+        
+        try:
+            payload = jwt.decode(token, os.getenv('SECRET'))
+            return payload['sub']
+        
+        except jwt.ExpiredSignatureError:
+            return "Expired token. Please login to get a new token"
+        except jwt.InvalidTokenError:
+            return "Invalid token, please register or login"
+        
 
 class ShortURL(db.Model):
 
