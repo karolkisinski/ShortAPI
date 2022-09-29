@@ -7,6 +7,7 @@ from app import create_app, db
 class ShortAPITestCase(unittest.TestCase):
 
     def setUp(self):
+        """Define test variables and initialize app."""
         self.app = create_app(config_name='testing')
         self.client = self.app.test_client
         self.urllist = {
@@ -18,11 +19,13 @@ class ShortAPITestCase(unittest.TestCase):
             db.create_all()     
 
     def test_urllist_creation(self):
+        """Test API can create a shorturl (POST request)"""
         res = self.client().post('/urllist/', data=self.urllist)
         self.assertEqual(res.status_code, 201)
         self.assertIn('Test url', str(res.data))
     
     def test_api_can_get_all_urls(self):
+        """Test API can get a shorturls (GET request)."""
         res = self.client().post('/urllist/', data=self.urllist)
         self.assertEqual(res.status_code, 201)
         res = self.client().get('/urllist/')
@@ -30,6 +33,7 @@ class ShortAPITestCase(unittest.TestCase):
         self.assertIn('Test url', str(res.data))
 
     def test_api_can_get_url_by_id(self):
+        """Test API can get a single shorturl by using it's id."""
         res = self.client().post('/urllist/', data=self.urllist)
         self.assertEqual(res.status_code, 201)
         result_in_json = json.loads(res.data.decode('utf-8').replace("'", "\""))
@@ -39,6 +43,7 @@ class ShortAPITestCase(unittest.TestCase):
         self.assertIn('Test url', str(result.data))
 
     def test_api_can_be_edited(self):
+        """Test API can edit an existing shorturl. (PUT request)"""
         res = self.client().post(
             '/urllist/',
             data = {
@@ -57,6 +62,7 @@ class ShortAPITestCase(unittest.TestCase):
         self.assertIn('Test url 3 changed', str(results.data))
 
     def test_urllist_deletion(self):
+        """Test API can delete an existing shorturl. (DELETE request)."""
         res = self.client().post(
             '/urllist/',
             data = {
@@ -70,6 +76,7 @@ class ShortAPITestCase(unittest.TestCase):
         self.assertEqual(result.status_code, 404)
     
     def tearDown(self):
+        """teardown all initialized variables."""
         with self.app.app_context():
             db.session.remove()
             db.drop_all()
