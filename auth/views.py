@@ -4,6 +4,7 @@ from flask import make_response, request, jsonify
 from app.models import User
 
 class RegistrationView(MethodView):
+    
     """This class registers a new user."""
 
     def post(self):
@@ -22,7 +23,7 @@ class RegistrationView(MethodView):
                 user.save()
 
                 response = {
-                    'message': 'You registered succssfully. Please log in'
+                    'message': 'You registered successfully. Please log in.'
                 }
                 return make_response(jsonify(response)), 201
 
@@ -42,13 +43,13 @@ class RegistrationView(MethodView):
 
 class LoginView(MethodView):
     """This class-based view handles user login and access token generation."""
-    def post():
+    def post(self):
         try:
             # get a user object using their email
             user = User.query.filter_by(email=request.data['email']).first()
 
             # try to authenticate the found user using their password
-            if user and user.password_is_valid(request.data['password']):
+            if user and user.is_password_valid(request.data['password']):
                 # generate the access token. 
                 access_token = user.generate_token(user.id)
                 if access_token:

@@ -120,7 +120,7 @@ def create_app(config_name):
                 }
                 return make_response(jsonify(response)), 401
     
-    from auth import auth_bluetprint
+    from auth.views import auth_bluetprint
     app.register_blueprint(auth_bluetprint)
 
     return app

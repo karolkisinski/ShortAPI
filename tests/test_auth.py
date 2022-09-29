@@ -28,7 +28,7 @@ class AuthTestCase(unittest.TestCase):
         # get the results returned in json
         result = json.loads(res.data.decode())
         # assert that the request contains a success message and a 201 SC
-        self.assertEqual(result['message'], "You registered successfully.")
+        self.assertEqual(result['message'], "You registered successfully. Please log in.")
         self.assertEqual(res.status_code, 201)
 
     def test_already_registered_user(self):
@@ -47,6 +47,7 @@ class AuthTestCase(unittest.TestCase):
         res = self.client().post('/auth/register', data=self.user_data)
         self.assertEqual(res.status_code, 201)
         login_res = self.client().post('/auth/login', data=self.user_data)
+        print(login_res)
 
         # get the results in json
         result = json.loads(login_res.data.decode())
@@ -71,7 +72,7 @@ class AuthTestCase(unittest.TestCase):
         # assert that this response must contain an error message
         # and an error status code 401
         self.assertEqual(res.status_code, 401)
-        self.assertEqual(result['message'], "Invalid email or password, Please try again")
+        self.assertEqual(result['message'], "Invalid email or password, Please try again.")
         
 if __name__ == "__main__":
     unittest.main()
