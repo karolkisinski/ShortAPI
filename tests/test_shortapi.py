@@ -18,6 +18,22 @@ class ShortAPITestCase(unittest.TestCase):
         with self.app.app_context():
             db.create_all()     
 
+    def register_user(self, email="user@test.com", password="test123123"):
+        """Test register a test user"""
+        user_data = {
+            'email': email,
+            'password': password
+        }
+        return self.client().post('/auth/register', data=user_data)
+
+    def login_user(self, email="user@test.com", password="test123123"):
+        """Test login as test user"""
+        user_data = {
+            'email': email,
+            'password': password
+        }
+        return self.client().post('/auth/login', data=user_data)
+        
     def test_urllist_creation(self):
         """Test API can create a shorturl (POST request)"""
         res = self.client().post('/urllist/', data=self.urllist)
