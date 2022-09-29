@@ -34,7 +34,7 @@ class RegistrationView(MethodView):
         
         else:
             response = {
-                'message': 'User already exists. Please login'
+                'message': 'User already exists. Please login.'
             }
 
             return make_response(jsonify(response)), 202   
