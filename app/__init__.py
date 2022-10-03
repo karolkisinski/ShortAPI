@@ -21,7 +21,6 @@ def create_app(config_name):
         # get the access token from the header
         auth_header = request.headers.get('Authorization')
         access_token = auth_header.split(" ")[1]
-
         if access_token:
             # attemp to decode the token and get the user id
             user_id = User.decode_token(access_token)
@@ -38,7 +37,8 @@ def create_app(config_name):
                             'id': url_list.id,
                             'title': url_list.title,
                             'url': url_list.url,
-                            'date_created': url_list.date_created
+                            'date_created': url_list.date_created,
+                            'created_by': user_id
                         })
                         response.status_code = 201
                         return response
