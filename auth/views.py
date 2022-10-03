@@ -52,10 +52,12 @@ class LoginView(MethodView):
             if user and user.is_password_valid(request.data['password']):
                 # generate the access token. 
                 access_token = user.generate_token(user.id)
+
                 if access_token:
                     response = {
-                        'message': 'You logged in successfully',
+                        'message': 'You logged in successfully.',
                         'access_token': access_token.decode()
+                        #'access_token': user.decode_token(access_token)
                     }
                     return make_response(jsonify(response)), 200
             else:
