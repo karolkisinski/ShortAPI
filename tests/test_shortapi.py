@@ -39,7 +39,6 @@ class ShortAPITestCase(unittest.TestCase):
         self.register_user()
         result = self.login_user()
         access_token = json.loads(result.data.decode())['access_token']
-
         # create url by POST request
         res = self.client().post(
             '/urllist/', 
@@ -90,12 +89,10 @@ class ShortAPITestCase(unittest.TestCase):
         self.register_user()
         result = self.login_user()
         access_token = json.loads(result.data.decode())['access_token']
-
         res = self.client().post(
-            '/urllist/',
+            '/urllist/{}'.format(results['id']),
             headers=dict(Authorization="Bearer " + access_token),
             data = {
-                'id': 1,
                 'title' : 'Test url 3',
                 'url' : 'http://localhost.com/ogeg/dgeg/egdg'
             })
@@ -115,7 +112,7 @@ class ShortAPITestCase(unittest.TestCase):
             '/urllist/{}'.format(results['id']),
             headers=dict(Authorization="Bearer " + access_token),
             )
-        self.assertIn('Edit method worked', str(results.data))
+        self.assertIn('Edit method worked', results.data)
 
     def test_urllist_deletion(self):
         """Test API can delete an existing shorturl. (DELETE request)."""

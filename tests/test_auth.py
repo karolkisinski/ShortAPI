@@ -47,8 +47,6 @@ class AuthTestCase(unittest.TestCase):
         res = self.client().post('/auth/register', data=self.user_data)
         self.assertEqual(res.status_code, 201)
         login_res = self.client().post('/auth/login', data=self.user_data)
-        print(login_res)
-
         # get the results in json
         result = json.loads(login_res.data.decode())
         # Test that the response contains success message
