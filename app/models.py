@@ -34,8 +34,8 @@ class User(db.Model):
 
         try:
             payload = {
-                'exp': datetime.utcnow() + datetime.timedelta(minutes=5),
-                'iat': datetime.utcnow(),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5),
+                'iat': datetime.datetime.utcnow(),
                 'sub': user_id
             }
 
@@ -48,11 +48,15 @@ class User(db.Model):
 
         except Exception as e:
             return str(e)
+            
     @staticmethod
     def decode_token(token):
-        
         try:
-            payload = jwt.decode(token, os.getenv('SECRET'))
+            payload = jwt.decode(
+                token,
+                os.getenv('SECRET'),
+                algorithms='HS256'
+            )
             return payload['sub']
         
         except jwt.ExpiredSignatureError:
@@ -75,14 +79,15 @@ class ShortURL(db.Model):
     def shortest(self):
         chars = "ABCDEFGHIJKLMNOQPRSTWUZXV"
         s_url = "".join(secrets.choice(chars) for _ in range(8))
+        return s_url
         
 
 
-    def __init__(self, title, url, created_by):
+    def __init__(self, title, url):
         self.title = title
         self.url = url
-        self.short_url = "".join(secrets.choice(self.chars) for _ in range(8))
-        self.created_by = created_by
+        self.short_url = self.shortest()
+        self.created_by = self.created_by
 
     def save(self):
         db.session.add(self)
