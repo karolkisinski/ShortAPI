@@ -94,8 +94,8 @@ class ShortURL(db.Model):
         db.session.commit()
 
     @staticmethod
-    def get_all(user_id):
-        return ShortURL.query.all(created_by=user_id)
+    def get_all():
+        return ShortURL.query.all()
 
     def delete(self):
         db.session.delete(self)
