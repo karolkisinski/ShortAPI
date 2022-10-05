@@ -3,7 +3,7 @@ from flask_api import FlaskAPI
 from flask_sqlalchemy import SQLAlchemy
 from flask import request, jsonify, abort, make_response
 from instance.config import app_config
-
+from flask import redirect
 db = SQLAlchemy()
 
 def create_app(config_name):
@@ -118,7 +118,12 @@ def create_app(config_name):
                     'message': message
                     }
                 return make_response(jsonify(response)), 401
-    
+
+    @app.route('/<string:surl>', methods=['GET'])
+    def redirect_to_url(surl):
+        url = ShortURL.query.filter_by(short_url=surl).first()
+        return redirect(url.url)
+
     from auth.views import auth_bluetprint
     app.register_blueprint(auth_bluetprint)
 
