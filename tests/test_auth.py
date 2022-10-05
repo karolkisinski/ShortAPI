@@ -14,7 +14,7 @@ class AuthTestCase(unittest.TestCase):
         self.user_data = {
             'email': 'test@example.com',
             'password': 'test_password123@'
-        }
+            }
 
         with self.app.app_context():
             # create all tables
@@ -39,8 +39,7 @@ class AuthTestCase(unittest.TestCase):
         self.assertEqual(second_res.status_code, 202)
         # get the results returned in json format
         result = json.loads(second_res.data.decode())
-        self.assertEqual(
-            result['message'], "User already exists. Please login.")
+        self.assertEqual(result['message'], "User already exists. Please login.")
 
     def test_user_login(self):
         """Test registered user can login."""
@@ -61,7 +60,7 @@ class AuthTestCase(unittest.TestCase):
         not_a_user = {
             'email': 'not_a_user@example.com',
             'password': 'nope'
-        }
+            }
         # send a POST request to /auth/login with the data above
         res = self.client().post('/auth/login',data=not_a_user)
         # get a result in json

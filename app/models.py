@@ -17,7 +17,7 @@ class User(db.Model):
 
     urls = db.relationship(
                 'ShortURL', order_by='ShortURL.id', cascade='all, delete-orphan'
-    )
+                )
 
     def __init__(self, email, password):
         self.email = email
@@ -37,13 +37,13 @@ class User(db.Model):
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5),
                 'iat': datetime.datetime.utcnow(),
                 'sub': user_id
-            }
+                }
 
             jwt_string = jwt.encode(
                 payload,
                 os.getenv('SECRET'),
                 algorithm='HS256'
-            )
+                )
             return jwt_string
 
         except Exception as e:
@@ -56,7 +56,7 @@ class User(db.Model):
                 token,
                 os.getenv('SECRET'),
                 algorithms='HS256'
-            )
+                )
             return payload['sub']
         
         except jwt.ExpiredSignatureError:

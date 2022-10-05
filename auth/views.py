@@ -24,19 +24,19 @@ class RegistrationView(MethodView):
 
                 response = {
                     'message': 'You registered successfully. Please log in.'
-                }
+                    }
                 return make_response(jsonify(response)), 201
 
             except Exception as e:
                 response = {
                     'message': str(e)
-                }
+                    }
                 return make_response(jsonify(response)), 401
         
         else:
             response = {
                 'message': 'User already exists. Please login.'
-            }
+                }
 
             return make_response(jsonify(response)), 202   
 
@@ -58,20 +58,20 @@ class LoginView(MethodView):
                         'message': 'You logged in successfully.',
                         'access_token': access_token.decode()
                         #'access_token': user.decode_token(access_token)
-                    }
+                        }
                     return make_response(jsonify(response)), 200
             else:
                 # user does not exist
                 response = {
                     'message': 'Invalid email or password, Please try again.'
-                }
+                    }
                 return make_response(jsonify(response)), 401
         
         except Exception as e:
             # create a response containing an string error message
             response = {
                 'message': str(e)
-            }
+                }
             # return a sever error
             return make_response(jsonify(response)), 500
 
@@ -82,10 +82,10 @@ auth_bluetprint.add_url_rule(
     '/auth/register',
     view_func=registration_view,
     methods=['POST']
-)
+    )
 
 auth_bluetprint.add_url_rule(
     '/auth/login',
     view_func=login_view,
     methods=['POST']
-)
+    )

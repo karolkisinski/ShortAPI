@@ -23,7 +23,7 @@ class ShortAPITestCase(unittest.TestCase):
         user_data = {
             'email': email,
             'password': password
-        }
+            }
         return self.client().post('/auth/register', data=user_data)
 
     def login_user(self, email="user@test.com", password="test123123"):
@@ -31,7 +31,7 @@ class ShortAPITestCase(unittest.TestCase):
         user_data = {
             'email': email,
             'password': password
-        }
+            }
         return self.client().post('/auth/login', data=user_data)
 
     def test_urllist_creation(self):
@@ -73,10 +73,10 @@ class ShortAPITestCase(unittest.TestCase):
         access_token = json.loads(result.data.decode())['access_token']
         
         res = self.client().post(
-        '/urllist/', 
-        headers=dict(Authorization="Bearer " + access_token),
-        data=self.urllist
-        )
+            '/urllist/', 
+            headers=dict(Authorization="Bearer " + access_token),
+            data=self.urllist
+            )
         self.assertEqual(res.status_code, 201)
         result_in_json = json.loads(res.data.decode('utf-8').replace("'", "\""))
         result = self.client().get(
@@ -134,15 +134,15 @@ class ShortAPITestCase(unittest.TestCase):
         results = json.loads(res.data.decode())
 
         res = self.client().delete(
-                                    '/urllist/{}'.format(results['id']),
-                                    headers=dict(Authorization="Bearer " + access_token)
-                                  )
+                    '/urllist/{}'.format(results['id']),
+                    headers=dict(Authorization="Bearer " + access_token)
+                    )
         self.assertEqual(res.status_code, 200)
 
         result = self.client().get(
-                                    '/urllist/{}'.format(results['id']),
-                                    headers=dict(Authorization="Bearer " + access_token)
-                                  )
+                    '/urllist/{}'.format(results['id']),
+                    headers=dict(Authorization="Bearer " + access_token)
+                    )
         self.assertEqual(result.status_code, 404)
     
     def tearDown(self):

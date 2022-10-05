@@ -1,8 +1,7 @@
 import os
 from flask_api import FlaskAPI
 from flask_sqlalchemy import SQLAlchemy
-from flask import request, jsonify, abort, redirect, make_response
-import auth
+from flask import request, jsonify, abort, make_response
 from instance.config import app_config
 
 db = SQLAlchemy()
@@ -39,7 +38,7 @@ def create_app(config_name):
                             'url': url_list.url,
                             'date_created': url_list.date_created,
                             'created_by': user_id
-                        })
+                            })
                         response.status_code = 201
                         return response
                 else:
@@ -54,7 +53,7 @@ def create_app(config_name):
                             'url': url.url,
                             'short_url': url.short_url,
                             'date_created': url.date_created
-                        }
+                            }
                         results.append(obj)
                     response = jsonify(results)
                     response.status_code = 200
@@ -64,7 +63,7 @@ def create_app(config_name):
                 message = user_id
                 response = {
                     'message': message
-                }
+                    }
                 return make_response(jsonify(response)), 401
     
     @app.route('/urllist/<int:id>', methods=['GET', 'PUT', 'DELETE'])
@@ -82,13 +81,13 @@ def create_app(config_name):
 
                 if not urllist:
                     abort(404)
-                
+                # DELETE
                 if request.method == 'DELETE':
                     urllist.delete()
                     return {
                         "message": "urllist {} deleted successfully".format(urllist.id)
-                    }, 200
-
+                        }, 200
+                # PUT
                 elif request.method == 'PUT':
                     title = str(request.data.get('title', ''))
                     urllist.title = title
@@ -98,7 +97,7 @@ def create_app(config_name):
                         'title': urllist.title,
                         'url': urllist.url,
                         'short_url': urllist.short_url
-                    })
+                        })
                     response.status_code = 200
                     return response
                 
@@ -109,7 +108,7 @@ def create_app(config_name):
                         'title': urllist.title,
                         'url': urllist.url,
                         'short_url': urllist.short_url
-                    })
+                        })
                     response.status_code = 200
                     return response
         else:
@@ -117,7 +116,7 @@ def create_app(config_name):
                 message = user_id
                 response = {
                     'message': message
-                }
+                    }
                 return make_response(jsonify(response)), 401
     
     from auth.views import auth_bluetprint
