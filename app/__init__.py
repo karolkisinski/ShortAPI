@@ -18,8 +18,15 @@ def create_app(config_name):
     @app.route('/urllist/', methods=['POST', 'GET'])
     def urllist():
         # get the access token from the header
-        auth_header = request.headers.get('Authorization')
-        access_token = auth_header.split(" ")[1]
+        try:
+            auth_header = request.headers.get('Authorization')
+            access_token = auth_header.split(" ")[1]
+        except:
+            response = jsonify({
+                'message': "Please login."
+                })
+            response.status_code = 201
+            return response
         if access_token:
             # attemp to decode the token and get the user id
             user_id = User.decode_token(access_token)
@@ -69,8 +76,15 @@ def create_app(config_name):
     @app.route('/urllist/<int:id>', methods=['GET', 'PUT', 'DELETE'])
     def urllist_manipulation(id, **kwargs):
         # get the access token from the header
-        auth_header = request.headers.get('Authorization')
-        access_token = auth_header.split(" ")[1]
+        try:
+            auth_header = request.headers.get('Authorization')
+            access_token = auth_header.split(" ")[1]
+        except:
+            response = jsonify({
+                'message': "Please login."
+                })
+            response.status_code = 201
+            return response
 
         if access_token:
             # attemp to decode the token and get the user id
