@@ -8,6 +8,7 @@ import os
 
 load_dotenv()
 
+
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -16,8 +17,8 @@ class User(db.Model):
     password = db.Column(db.String(256), nullable=False)
 
     urls = db.relationship(
-                'ShortURL', order_by='ShortURL.id', cascade='all, delete-orphan'
-                )
+        'ShortURL', order_by='ShortURL.id', cascade='all, delete-orphan'
+    )
 
     def __init__(self, email, password):
         self.email = email
@@ -37,18 +38,18 @@ class User(db.Model):
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5),
                 'iat': datetime.datetime.utcnow(),
                 'sub': user_id
-                }
+            }
 
             jwt_string = jwt.encode(
                 payload,
                 os.getenv('SECRET'),
                 algorithm='HS256'
-                )
+            )
             return jwt_string
 
         except Exception as e:
             return str(e)
-            
+
     @staticmethod
     def decode_token(token):
         try:
@@ -56,14 +57,14 @@ class User(db.Model):
                 token,
                 os.getenv('SECRET'),
                 algorithms='HS256'
-                )
+            )
             return payload['sub']
-        
+
         except jwt.ExpiredSignatureError:
             return "Expired token. Please login to get a new token"
         except jwt.InvalidTokenError:
             return "Invalid token, please register or login"
-        
+
 
 class ShortURL(db.Model):
 
@@ -80,8 +81,6 @@ class ShortURL(db.Model):
         chars = "ABCDEFGHIJKLMNOQPRSTWUZXV"
         s_url = "".join(secrets.choice(chars) for _ in range(8))
         return s_url
-        
-
 
     def __init__(self, title, url):
         self.title = title
@@ -103,4 +102,3 @@ class ShortURL(db.Model):
 
     def __repr__(self):
         return "".format(self.title, self.short_url, self.url)
-    

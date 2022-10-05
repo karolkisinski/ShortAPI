@@ -6,10 +6,12 @@ from instance.config import app_config
 from flask import redirect
 db = SQLAlchemy()
 
+
 def create_app(config_name):
     from app.models import ShortURL, User
 
-    app = FlaskAPI(__name__, instance_path=os.path.join(os.path.abspath(os.curdir), 'instance'), instance_relative_config=True)
+    app = FlaskAPI(__name__, instance_path=os.path.join(
+        os.path.abspath(os.curdir), 'instance'), instance_relative_config=True)
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -24,7 +26,7 @@ def create_app(config_name):
         except:
             response = jsonify({
                 'message': "Please login."
-                })
+            })
             response.status_code = 201
             return response
         if access_token:
@@ -45,7 +47,7 @@ def create_app(config_name):
                             'url': url_list.url,
                             'date_created': url_list.date_created,
                             'created_by': user_id
-                            })
+                        })
                         response.status_code = 201
                         return response
                 else:
@@ -60,7 +62,7 @@ def create_app(config_name):
                             'url': url.url,
                             'short_url': url.short_url,
                             'date_created': url.date_created
-                            }
+                        }
                         results.append(obj)
                     response = jsonify(results)
                     response.status_code = 200
@@ -70,9 +72,9 @@ def create_app(config_name):
                 message = user_id
                 response = {
                     'message': message
-                    }
+                }
                 return make_response(jsonify(response)), 401
-    
+
     @app.route('/urllist/<int:id>', methods=['GET', 'PUT', 'DELETE'])
     def urllist_manipulation(id, **kwargs):
         # get the access token from the header
@@ -82,7 +84,7 @@ def create_app(config_name):
         except:
             response = jsonify({
                 'message': "Please login."
-                })
+            })
             response.status_code = 201
             return response
 
@@ -100,7 +102,7 @@ def create_app(config_name):
                     urllist.delete()
                     return {
                         "message": "urllist {} deleted successfully".format(urllist.id)
-                        }, 200
+                    }, 200
                 # PUT
                 elif request.method == 'PUT':
                     title = str(request.data.get('title', ''))
@@ -111,10 +113,10 @@ def create_app(config_name):
                         'title': urllist.title,
                         'url': urllist.url,
                         'short_url': urllist.short_url
-                        })
+                    })
                     response.status_code = 200
                     return response
-                
+
                 else:
                     # GET
                     response = jsonify({
@@ -122,16 +124,16 @@ def create_app(config_name):
                         'title': urllist.title,
                         'url': urllist.url,
                         'short_url': urllist.short_url
-                        })
+                    })
                     response.status_code = 200
                     return response
         else:
-                # user is not legit
-                message = user_id
-                response = {
-                    'message': message
-                    }
-                return make_response(jsonify(response)), 401
+            # user is not legit
+            message = user_id
+            response = {
+                'message': message
+            }
+            return make_response(jsonify(response)), 401
 
     @app.route('/<string:surl>', methods=['GET'])
     def redirect_to_url(surl):

@@ -25,6 +25,7 @@ manager.add_command('db', MigrateCommand)
 # usage
 # python manage.py test
 
+
 @manager.command
 def test():
     tests = unittest.TestLoader().discover('./tests', pattern='test*.py')
@@ -33,6 +34,6 @@ def test():
         return 0
     return 1
 
+
 if __name__ == '__main__':
     manager.run()
-
